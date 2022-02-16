@@ -11,11 +11,25 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-12">
-				<h1></h1>
+				<h1>Now Playing</h1>
+				<% if ( typeof(userSearchTerm) !== "undefined" && userSearchTerm !== null ) {
+				%>
+				<h3>Search results for: <i>"<%= userSearchTerm %>"</i></h3>
+				<% } %>
 			</div>
 			<div class="col-sm-12">
-				
-				
+				<!-- we have an array called parsedData ! -->
+				<% 
+				if ( typeof(parsedData) !== "undefined" && parsedData !== null ) { 
+					parsedData.forEach((movie) => { %>
+					<a href="/movie/<%= movie.id %>">
+						<div class="col-md-3 col-sm-4 poster">
+							<img src="<%= imageBaseUrl + movie.poster_path %>" />
+							<p class="single-movie-title" style="text-align: center"><%= movie.title %></p>
+						</div>
+					</a>
+					<% }) 
+				} %>
 			</div>
 		</div>
 	</div>

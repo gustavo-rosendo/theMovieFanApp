@@ -11,7 +11,12 @@ a {
   margin-right: 10px;
 }
 
+.poster {
+  aspect-ratio: 2 / 3; /* put this to keep the width:height proportion */
+}
+
 .poster img{
+  aspect-ratio: 2 / 3; /* put this to keep the width:height proportion in the images as well */
   width: 90%;
   text-align: center;
   margin: 10px 5% 10px;

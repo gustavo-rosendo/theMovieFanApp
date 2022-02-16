@@ -6,18 +6,18 @@
 		<div class="row">
 			<div class="col-sm-8 col-sm-offset-2 text-center">
 				<h1 class="single-movie-title">
-
+					<%= parsedData.title %>
 				</h1>
 				
 				<h3 class="single-movie-title">
-
+					<%= parsedData.tagline %>
 				</h3>
 				
 
-				<img src="" />
+				<a href="<%= parsedData.homepage %>" target="_blank"><img src="<%= imageBaseUrl+parsedData.poster_path %>" /></a>
 				
 				<p class="overview-header">Movie Synopsis: <span class="single-movie-overview">
-					
+					<%= parsedData.overview %>
 				</span></p>
 			</div>
 		</div>
@@ -39,8 +39,24 @@
         <h4 class="modal-title" id="myModalLabel">Movie Information</h4>
       </div>
       <div class="modal-body">
-
-
+				<p><b>IMDB link: </b><a href="https://www.imdb.com/title/<%= parsedData.imdb_id %>" target="_blank">https://www.imdb.com/title/<%= parsedData.imdb_id %></a></p> 
+				<% 	
+						let budget = parseFloat(parsedData.budget);
+						budget = budget.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+				%>
+				<p><b>Budget:</b> <%= budget %></p> 
+				<% 	
+						let revenue = parseFloat(parsedData.revenue);
+						revenue = revenue.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+				%>
+				<p><b>Revenue: </b><%= revenue %></p>
+				<p><b>Release Date: </b><%= parsedData.release_date %></p>
+				<p><b>Production Companies: </b></p>
+				<ul>
+					<% parsedData.production_companies.forEach((company) => { %>
+						<li><%= company.name %></li>
+					<% }) %>
+				</ul>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

@@ -9,7 +9,10 @@ var indexRouter = require('./routes/index');
 var app = express();
 
 const helmet = require('helmet');
-app.use(helmet({ contentSecurityPolicy: false }));
+app.use(helmet({ 
+  contentSecurityPolicy: false,  
+  crossOriginEmbedderPolicy: false /* allows resources (img, etc.) to load from cross-origin sites */ 
+}));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
