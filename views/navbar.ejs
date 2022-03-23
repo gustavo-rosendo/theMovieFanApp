@@ -4,7 +4,15 @@
       <a class="navbar-brand" href="/">The New IMDB</a>
     </div>
     <ul class="nav navbar-nav">
-      <li><a href="/login">Login</a></li>
+      <% if ( typeof(user) !== "undefined" && user !== null ) { %>
+        <li><a href="/user">Welcome <i><%= user.displayName %>!</i></a></li>
+        <li>
+          <form name="logoutForm" method="post" action="/logout"></form>
+          <a href="javascript:document.logoutForm.submit()" style="color: red;">Logout</a>
+        </li>
+				<% } else { %>
+        <li><a href="/login">Login</a></li>
+        <% } %>
       <li><a href="/favorites">Favorites</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right">

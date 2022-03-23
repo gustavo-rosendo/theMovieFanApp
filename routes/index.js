@@ -1,7 +1,14 @@
 var express = require('express');
+const passport = require('passport');
 var router = express.Router();
 
 const request = require('request');
+
+const UPLOAD_PATH = 'public/images/uploads';
+const multer = require('multer');
+const upload = multer({ dest: UPLOAD_PATH });
+
+const fs = require('fs');
 
 const apiKey = '17698155ad82a29e7d9f4393dff48cec';
 const apiBaseUrl = 'https://api.themoviedb.org/3';
@@ -10,6 +17,7 @@ const imageBaseUrl = 'https://image.tmdb.org/t/p/w300';
 
 router.use((req, res, next) => {
   res.locals.imageBaseUrl = imageBaseUrl;
+  res.locals.user = req.user;
   next();
 })
 
@@ -28,6 +36,24 @@ router.get('/', function(req, res, next) {
       parsedData: parsedData.results
     });
   });
+});
+
+router.get('/login', passport.authenticate('github'));
+
+router.get('/auth', passport.authenticate('github', { successRedirect: '/', failureRedirect: '/login' }));
+
+router.get('/favorites', (req, res, next) => {
+  res.render('under-construction');
+});
+
+router.get('/user', (req, res, next) => {
+  //res.json({user: req.user});
+  res.render('user-profile');
+});
+
+router.post('/logout', (req, res, next) => {
+  req.logout();
+  res.redirect('/');
 });
 
 router.get('/movie/:id', (req, res, next) => {
@@ -76,6 +102,17 @@ router.post('/search', (req, res, next) => {
       parsedData: parsedData.results,
       userSearchTerm: req.body.movieSearch,
     });
+  });
+});
+
+router.post('/upload', upload.single('meme'), (req, res, next) => {
+  const newFilePath = `${UPLOAD_PATH}/${Date.now()}_${req.file.originalname}`;
+
+  fs.rename(req.file.path, newFilePath, (err) => {
+    if(err) throw err;
+
+    //TO-DO: save newFilePath to the database
+    res.json('File uploaded successfully!');
   });
 });
 

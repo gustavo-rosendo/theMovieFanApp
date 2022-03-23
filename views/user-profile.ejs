@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>	The Movie Fan App </title>
+  <% include head %>
+</head>
+<body>
+	<% include navbar %>
+	<div class="container">
+  <% if ( typeof(user) !== "undefined" && user !== null ) { %>
+		<div class="row">
+			<div class="col-sm-8 col-sm-offset-2 text-center user-profile">
+				<h1 class="single-movie-title">
+					User Profile Page
+				</h1>
+          <a href="<%= user.profileUrl %>" target="_blank"><img src="<%= user.photos[0].value %>" /></a>
+          <br><br>
+			</div>
+		</div>
+    <div class="row">
+      <p>
+        <label>Name:&ThickSpace;</label><%= user.displayName %>
+      </p>
+      <p>
+        <label>Login method:&ThickSpace;</label><%= user.provider %>
+      </p>
+      <p>
+        <form method="post" action="/upload" enctype="multipart/form-data" >
+          <div class="flex-form">
+            <label for="file">Choose image to upload:&ThickSpace;</label>
+            <input type="file" name="meme" accept="image/*" >
+          </div>
+          <div>
+            <input type="submit" value="Upload" >
+          </div>
+        </form>
+      </p>
+    </div>
+  <% } else { %>
+    <h3 class="text-center">Couldn't fetch user profile.</h3>
+    <h4 class="text-center">Please login before trying to open this page.</h4>
+  <% } %>
+	</div>
+</body>
+</html>

@@ -3,6 +3,11 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const config = require('./config');
+
+const sessions = require('express-session');
+const passport = require('passport');
+const GitHubStrategy = require('passport-github').Strategy;
 
 var indexRouter = require('./routes/index');
 
@@ -23,6 +28,31 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+//========= PASSPORT CONFIG! =========
+app.use(sessions({
+  secret: 'My favorite dog was Pirata!',
+  resave: false,
+  saveUninitialized: true,
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new GitHubStrategy({
+    clientID: config.PASSPORT.GITHUB_CLIENT_ID,
+    clientSecret: config.PASSPORT.GITHUB_CLIENT_SECRET,
+    callbackURL: config.PASSPORT.CALLBACK_URL
+  },
+  function(accessToken, refreshToken, profile, cb) {
+    return cb(null, profile);
+  }
+))
+passport.serializeUser((user, cb) => {
+  cb(null, user);
+});
+passport.deserializeUser((user, cb) => {
+  console.log("deserializing user ...");
+  cb(null, user);
+})
 
 app.use('/', indexRouter);
 
